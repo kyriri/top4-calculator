@@ -1,15 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8"/>
-        <title></title>
-        <style>
-            body {
-                font-family: Avenir, 'Lucida Sans', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-                font-size: 10px;
-            }
-        </style>
-    </head>
-    <body></body>
-    <script></script>
+  <head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <style>
+      body {
+        font-family: Avenir, 'Lucida Sans', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        font-size: 10px;
+      }
+      main {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: auto;
+        grid-template-areas:
+          'display display display display'
+          'clear   clear   mult    divi'
+          'k7      k8      k9      minus'
+          'k4      k5      k6      sum'
+          'k1      k2      k3      enter'
+          'k0      k0      comma   enter';
+      }
+      .all-keys {}
+      .square-key {}
+      .display {
+        grid-area: display;
+      }
+      .clear-key {
+        grid-area: clear;
+      }
+      .enter-key {
+        grid-area: enter;
+      }
+      .multi { grid-area: multi; }
+      .divi { grid-area: divi; }
+      .minus { grid-area: minus; }
+      .sum { grid-area: sum; }
+      .comma { grid-area: comma; }
+      .k0 { grid-area: k0; }
+      .k1 { grid-area: k1; }
+      .k2 { grid-area: k2; }
+      .k3 { grid-area: k3; }
+      .k4 { grid-area: k4; }
+      .k5 { grid-area: k5; }
+      .k6 { grid-area: k6; }
+      .k7 { grid-area: k7; }
+      .k8 { grid-area: k8; }
+      .k9 { grid-area: k9; }
+    </style>
+  </head>
+  <body>
+    <div>
+      <header></header>
+      <main>
+        <div class='display'></div>
+        <div class='clear'>clear</div>
+        <div class='mult square-key'>*</div>
+        <div class='divi square-key'>÷</div>
+        <div class='minus square-key'>-</div>
+        <div class='sum square-key'>+</div>
+        <div class='k0 square-key'>0</div>
+        <div class='k1 square-key'>1</div>
+        <div class='k2 square-key'>2</div>
+        <div class='k3 square-key'>3</div>
+        <div class='k4 square-key'>4</div>
+        <div class='k5 square-key'>5</div>
+        <div class='k6 square-key'>6</div>
+        <div class='k7 square-key'>7</div>
+        <div class='k8 square-key'>8</div>
+        <div class='k9 square-key'>9</div>
+        <div class='comma square-key'>,</div>
+        <div class='enter'>enter</div>
+      </main>
+      <footer></footer>
+    </div>
+  </body>
+  <script></script>
 </html>
