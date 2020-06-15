@@ -2,34 +2,57 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title></title>
+    <title>Calculator</title>
     <style>
-      body {
+      html {
         font-family: Avenir, 'Lucida Sans', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         font-size: 10px;
+        color: black;
+      }
+      .content {
+        width: 52vh;
+        margin: 0 auto;
       }
       main {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         grid-template-rows: auto;
+        column-gap: 1vh;
+        row-gap: 1vh;
         grid-template-areas:
-          'display display display display'
-          'clear   clear   mult    divi'
-          'k7      k8      k9      minus'
-          'k4      k5      k6      sum'
-          'k1      k2      k3      enter'
-          'k0      k0      comma   enter';
+        'display display display display'
+        'clear   clear   mult    divi'
+        'k7      k8      k9      minus'
+        'k4      k5      k6      sum'
+        'k1      k2      k3      enter'
+        'k0      k0      comma   enter';
       }
-      .all-keys {}
-      .square-key {}
-      .display {
-        grid-area: display;
+      .display { 
+        color: white;
+        background-color: #8f6245;
+        height: 8vh;
+        font-family: monospace;
+        font-size: 6.5vh;
+        font-style: italic;
+        text-align: right;
+        grid-area: display; 
+        border-radius: .5vh;
+        padding: 2vh;
       }
-      .clear {
-        grid-area: clear;
+      .all-keys {
+        background-color: #d0abb5;
+        height: 8vh;
+        font-size: 3vh;
+        border-radius: .5vh;
+        padding: 2vh;
       }
-      .enter {
-        grid-area: enter;
+      .function-key {
+        background-color: #eacfcb;
+      }
+      .clear { grid-area: clear; }
+      .enter { 
+        height: auto;
+        grid-area: enter; 
       }
       .multi { grid-area: multi; }
       .divi { grid-area: divi; }
@@ -46,32 +69,41 @@
       .k7 { grid-area: k7; }
       .k8 { grid-area: k8; }
       .k9 { grid-area: k9; }
+      footer {
+        font-size: 1.6vh;
+        color: #5e6985;
+        text-align: center;
+        margin-top: 1.6vh;
+      }
     </style>
   </head>
   <body>
-    <div>
+    <div class='content'>
       <header></header>
       <main>
-        <div class='display'></div>
-        <div class='clear'>clear</div>
-        <div class='mult square-key'>*</div>
-        <div class='divi square-key'>÷</div>
-        <div class='minus square-key'>-</div>
-        <div class='sum square-key'>+</div>
-        <div class='k0 square-key'>0</div>
-        <div class='k1 square-key'>1</div>
-        <div class='k2 square-key'>2</div>
-        <div class='k3 square-key'>3</div>
-        <div class='k4 square-key'>4</div>
-        <div class='k5 square-key'>5</div>
-        <div class='k6 square-key'>6</div>
-        <div class='k7 square-key'>7</div>
-        <div class='k8 square-key'>8</div>
-        <div class='k9 square-key'>9</div>
-        <div class='comma square-key'>,</div>
-        <div class='enter'>enter</div>
+        <div class='display'>1.007.485,35</div>
+        <div class='clear function-key all-keys'>clear</div>
+        <div class='mult function-key all-keys'>×</div>
+        <div class='divi function-key all-keys'>÷</div>
+        <div class='minus function-key all-keys'>−</div>
+        <div class='sum function-key all-keys'>+</div>
+        <div class='k0 all-keys'>0</div>
+        <div class='k1 all-keys'>1</div>
+        <div class='k2 all-keys'>2</div>
+        <div class='k3 all-keys'>3</div>
+        <div class='k4 all-keys'>4</div>
+        <div class='k5 all-keys'>5</div>
+        <div class='k6 all-keys'>6</div>
+        <div class='k7 all-keys'>7</div>
+        <div class='k8 all-keys'>8</div>
+        <div class='k9 all-keys'>9</div>
+        <div class='comma all-keys'>'</div>
+        <div class='enter function-key all-keys'>enter</div>
       </main>
-      <footer></footer>
+      <footer>
+        kyriri @ 2020 quarentine<BR>
+        projects: previous | next
+      </footer>
     </div>
   </body>
   <script></script>
