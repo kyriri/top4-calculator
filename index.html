@@ -49,15 +49,15 @@
       .function-key {
         background-color: #eacfcb;
       }
-      .clear { grid-area: clear; }
-      .enter { 
+      #clear { grid-area: clear; }
+      #enter { 
         height: auto;
         grid-area: enter; 
       }
-      .multi { grid-area: multi; }
-      .divi { grid-area: divi; }
-      .minus { grid-area: minus; }
-      .sum { grid-area: sum; }
+      #multi { grid-area: multi; }
+      #divi { grid-area: divi; }
+      #minus { grid-area: minus; }
+      #sum { grid-area: sum; }
       .comma { grid-area: comma; }
       .k0 { grid-area: k0; }
       .k1 { grid-area: k1; }
@@ -90,23 +90,23 @@
       <header></header>
       <main>
         <div class='display'>1.007.485,35</div>
-        <div class='clear function-key all-keys'>clear</div>
-        <div class='mult function-key all-keys'>×</div>
-        <div class='divi function-key all-keys'>÷</div>
-        <div class='minus function-key all-keys'>−</div>
-        <div class='sum function-key all-keys'>+</div>
-        <div class='k0 all-keys'>0</div>
-        <div class='k1 all-keys'>1</div>
-        <div class='k2 all-keys'>2</div>
-        <div class='k3 all-keys'>3</div>
-        <div class='k4 all-keys'>4</div>
-        <div class='k5 all-keys'>5</div>
-        <div class='k6 all-keys'>6</div>
-        <div class='k7 all-keys'>7</div>
-        <div class='k8 all-keys'>8</div>
-        <div class='k9 all-keys'>9</div>
-        <div class='comma all-keys'>'</div>
-        <div class='enter function-key all-keys'>enter</div>
+        <div id='clear' class='function-key all-keys'>clear</div>
+        <div id='mult' class='function-key all-keys'>×</div>
+        <div id='divi' class='function-key all-keys'>÷</div>
+        <div id='minus' class='function-key all-keys'>−</div>
+        <div id='sum' class='function-key all-keys'>+</div>
+        <div class='k0 all-keys' value='0'>0</div>
+        <div class='k1 all-keys' value='1'>1</div>
+        <div class='k2 all-keys' value='2'>2</div>
+        <div class='k3 all-keys' value='3'>3</div>
+        <div class='k4 all-keys' value='4'>4</div>
+        <div class='k5 all-keys' value='5'>5</div>
+        <div class='k6 all-keys' value='6'>6</div>
+        <div class='k7 all-keys' value='7'>7</div>
+        <div class='k8 all-keys' value='8'>8</div>
+        <div class='k9 all-keys' value='9'>9</div>
+        <div class='comma all-keys' value='.'>'</div>
+        <div id='enter' class='function-key all-keys'>enter</div>
       </main>
       <footer>
         <a href='https://github.com/kyriri' target='_blank'>kyriri</a> 
@@ -119,5 +119,40 @@
     </div>
   </body>
   <script>
+    let num1 = '';
+    let num2 = '';
+    let fn = '';
+
+    window.addEventListener('click', retriveInput);
+
+    function retriveInput(e) {
+      if (e.target.id) {
+        fn = e.target.id;
+        console.log(fn);        
+        return;
+      }
+      if (e.target.attributes.value) {
+        value = e.target.attributes.value.value;
+        if (value == '.' && num1.match(/\./)) { return num1; }
+        num1 += value;
+        console.log(num1);
+        return num1;
+      }
+    }
+    
+/*
+    while input !function-key keep building number
+    (after first use of comma, disable it)
+    when click on function, finishes number, store fn and start next
+    while input !function-key keep building number
+    when click on function, evaluate, display and store result as num1
+    -- unless function was enter followed by a number, in which case
+       it should dismiss the result and build new num1
+
+       for later: double role of minus key (negative and operation)
+                  clear and restart keys
+                  correct comma vs dot visualization
+                  fallback for when number ends in comma
+*/
   </script>
 </html>
