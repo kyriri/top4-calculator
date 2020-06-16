@@ -121,25 +121,60 @@
   <script>
     let num1 = '';
     let num2 = '';
+    let currentInput = 'num1';
+    let currentInputContent = '';
     let fn = '';
 
     window.addEventListener('click', retriveInput);
 
-    function retriveInput(e) {
-      if (e.target.id) {
-        fn = e.target.id;
-        console.log(fn);        
-        return;
-      }
-      if (e.target.attributes.value) {
-        value = e.target.attributes.value.value;
-        if (value == '.' && num1.match(/\./)) { return num1; }
-        num1 += value;
-        console.log(num1);
-        return num1;
+    function toggleOrCalculate() {
+      if (currentInput == 'num1')  {
+        num1 = currentInputContent;
+        currentInputContent = '';
+        currentInput = 'num2';
+        console.log(`num1: ${num1}`);
+        
+      } else {
+        num2 = currentInputContent;
+        currentInputContent = '';
+        currentInput = 'num1';
+        console.log(`num2: ${num2}`);
+        num1 = calculator(+num1, +num2, fn);
+        console.log(`resultado no num1: ${num1}`);
       }
     }
-    
+    function retriveInput(e) {
+      if (e.target.attributes.value) {
+        value = e.target.attributes.value.value;
+        if (value == '.' && currentInputContent.match(/\./)) { return currentInputContent; }
+        currentInputContent += value;
+        console.log(currentInputContent);
+        return currentInputContent;
+      }
+      if (e.target.id) {   
+        toggleOrCalculate();
+        fn = e.target.id;
+        console.log(`fn: ${fn}`);  
+        //console.log(`num1: ${num1} and num2: ${num2}`);
+        return;
+      }
+    }
+    function calculator(num1 = 0, num2 = 0, fn) {
+      switch (fn) {
+        case 'sum':
+          return num1 + num2;
+        case 'minus':
+          return num1 - num2;
+        case 'mult':
+          return num1 * num2;
+        case 'divi':
+          let result = num1 / num2;
+          if (isNaN(result)) return 'Error'
+          if (result === Infinity) return '∞'
+          return result;
+      }
+    }
+
 /*
     while input !function-key keep building number
     (after first use of comma, disable it)
