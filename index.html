@@ -89,7 +89,7 @@
     <div class='content'>
       <header></header>
       <main>
-        <div class='display'>1.007.485,35</div>
+        <div class='display'>0</div>
         <div id='clear' class='function-key all-keys'>clear</div>
         <div id='mult' class='function-key all-keys'>×</div>
         <div id='divi' class='function-key all-keys'>÷</div>
@@ -119,6 +119,8 @@
     </div>
   </body>
   <script>
+    const display = document.getElementsByClassName('display')[0];
+
     let num1 = '';
     let num2 = '';
     let currentInput = 'num1';
@@ -126,6 +128,10 @@
     let fn = '';
 
     window.addEventListener('click', retriveInput);
+
+    function updateDisplay(info = currentInputContent) {
+      display.innerHTML = info;
+    }
 
     function toggleOrCalculate() {
       if (currentInput == 'num1')  {
@@ -140,6 +146,7 @@
         currentInput = 'num1';
         console.log(`num2: ${num2}`);
         num1 = calculator(+num1, +num2, fn);
+        updateDisplay(num1);
         console.log(`resultado no num1: ${num1}`);
       }
     }
@@ -148,6 +155,7 @@
         value = e.target.attributes.value.value;
         if (value == '.' && currentInputContent.match(/\./)) { return currentInputContent; }
         currentInputContent += value;
+        updateDisplay();
         console.log(currentInputContent);
         return currentInputContent;
       }
@@ -188,6 +196,7 @@
                   clear and restart keys
                   correct comma vs dot visualization
                   fallback for when number ends in comma
+                  what to do when the number is bigger than the display?
 */
   </script>
 </html>
