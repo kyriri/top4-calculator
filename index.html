@@ -127,7 +127,8 @@
     let currentInputContent = '';
     let fn = '';
 
-    window.addEventListener('click', retriveInput);
+    window.addEventListener('click', retriveClickInput);
+    window.addEventListener('keydown', retrieveKeyboardInput);
 
     function updateDisplay(info = currentInputContent) {
       display.innerHTML = info;
@@ -138,33 +139,57 @@
         num1 = currentInputContent;
         currentInputContent = '';
         currentInput = 'num2';
-        console.log(`num1: ${num1}`);
         
       } else {
         num2 = currentInputContent;
         currentInputContent = '';
         currentInput = 'num1';
-        console.log(`num2: ${num2}`);
         num1 = calculator(+num1, +num2, fn);
         updateDisplay(num1);
-        console.log(`resultado no num1: ${num1}`);
       }
     }
-    function retriveInput(e) {
+    function retriveClickInput(e) {
       if (e.target.attributes.value) {
         value = e.target.attributes.value.value;
-        if (value == '.' && currentInputContent.match(/\./)) { return currentInputContent; }
+        if (value == '.' && currentInputContent.match(/\./)) { return; }
         currentInputContent += value;
         updateDisplay();
-        console.log(currentInputContent);
-        return currentInputContent;
+        return;
       }
       if (e.target.id) {   
         toggleOrCalculate();
         fn = e.target.id;
-        console.log(`fn: ${fn}`);  
-        //console.log(`num1: ${num1} and num2: ${num2}`);
         return;
+      }
+    }
+    function retrieveKeyboardInput(e){
+      value = e.key;      
+      if( value == '.' || !isNaN(+value)) {
+        if (value == '.' && currentInputContent.match(/\./)) { return; }
+        currentInputContent += value;
+        updateDisplay();
+      } else {
+        toggleOrCalculate();
+        switch (value) {
+          case '+':
+            fn = 'sum';
+            break;
+          case '-':
+            fn = 'minus';
+            break;
+          case '*':
+            fn = 'mult';
+            break;
+          case '/':
+            fn = 'divi';
+            break;
+          case ('Backspace' || 'Delete'):
+            fn = 'clear';
+            break;
+          case 'Enter':
+            fn = 'enter';
+            break;
+        }
       }
     }
     function calculator(num1 = 0, num2 = 0, fn) {
