@@ -46,6 +46,9 @@
         border-radius: .5vh;
         padding: 2vh;
       }
+      .all-keys:hover {
+        box-shadow: 0 0 .8vh 0.4vh #5e6985;
+      }
       .function-key {
         background-color: #eacfcb;
       }
@@ -58,7 +61,10 @@
       #divi { grid-area: divi; }
       #minus { grid-area: minus; }
       #sum { grid-area: sum; }
-      .comma { grid-area: comma; }
+      .comma { 
+        grid-area: comma;
+        font-weight: 500;
+      }
       .k0 { grid-area: k0; }
       .k1 { grid-area: k1; }
       .k2 { grid-area: k2; }
@@ -105,7 +111,7 @@
         <div class='k7 all-keys' value='7'>7</div>
         <div class='k8 all-keys' value='8'>8</div>
         <div class='k9 all-keys' value='9'>9</div>
-        <div class='comma all-keys' value='.'>'</div>
+        <div class='comma all-keys' value='.'>.</div>
         <div id='enter' class='function-key all-keys'>enter</div>
       </main>
       <footer>
@@ -133,13 +139,11 @@
     function updateDisplay(info = currentInputContent) {
       display.innerHTML = info;
     }
-
     function toggleOrCalculate() {
       if (currentInput == 'num1')  {
         num1 = currentInputContent;
         currentInputContent = '';
         currentInput = 'num2';
-        
       } else {
         num2 = currentInputContent;
         currentInputContent = '';
@@ -159,7 +163,6 @@
       if (e.target.id) {   
         toggleOrCalculate();
         fn = e.target.id;
-        return;
       }
     }
     function retrieveKeyboardInput(e){
@@ -183,10 +186,10 @@
           case '/':
             fn = 'divi';
             break;
-          case ('Backspace' || 'Delete'):
-            fn = 'clear';
-            break;
-          case 'Enter':
+          //case ('Backspace' || 'Delete'):
+            //fn = 'clear';
+            //break;
+          case ('Enter' || '='):
             fn = 'enter';
             break;
         }
