@@ -129,7 +129,7 @@
     let memory = [];
 
     function test(e) {
-      selectAction( identifyInput(e) );
+      buildMemory( identifyInput(e) );
       console.table(memory);
     }
 
@@ -183,12 +183,14 @@
     }
     // the function below receives the last input (an object) and modifies
     // the global variable memory accordingly
-    function selectAction(input) {
+    function buildMemory(input) {
       if (!input) return;
       if (!memory[0]) {
         memory.push(input);
       } else if (input.type == 'num' && memory[memory.length - 1].type == 'num') {
         memory[memory.length - 1].value += input.value;
+      } else {
+        memory.push(input);
       }
     }
     function calculate(num1 = 0, num2 = 0, fn) {
