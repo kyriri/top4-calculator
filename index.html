@@ -24,8 +24,8 @@
         'clear   clear   mult    divi'
         'k7      k8      k9      minus'
         'k4      k5      k6      sum'
-        'k1      k2      k3      enter'
-        'k0      k0      comma   enter';
+        'k1      k2      k3      equals'
+        'k0      k0      dot     equals';
       }
       .display { 
         color: white;
@@ -53,32 +53,32 @@
         background-color: #eacfcb;
       }
       #clear { grid-area: clear; }
-      #enter { 
+      #equals { 
         height: auto;
-        grid-area: enter; 
+        grid-area: equals; 
       }
       #multi { grid-area: multi; }
       #divi { grid-area: divi; }
       #minus { grid-area: minus; }
       #sum { grid-area: sum; }
-      .comma { 
-        grid-area: comma;
+      #dot { 
+        grid-area: dot;
         font-weight: 500;
       }
-      .k0 { grid-area: k0; }
-      .k1 { grid-area: k1; }
-      .k2 { grid-area: k2; }
-      .k3 { grid-area: k3; }
-      .k4 { grid-area: k4; }
-      .k5 { grid-area: k5; }
-      .k6 { grid-area: k6; }
-      .k7 { grid-area: k7; }
-      .k8 { grid-area: k8; }
-      .k9 { grid-area: k9; }
+      #k0 { grid-area: k0; }
+      #k1 { grid-area: k1; }
+      #k2 { grid-area: k2; }
+      #k3 { grid-area: k3; }
+      #k4 { grid-area: k4; }
+      #k5 { grid-area: k5; }
+      #k6 { grid-area: k6; }
+      #k7 { grid-area: k7; }
+      #k8 { grid-area: k8; }
+      #k9 { grid-area: k9; }
       footer {
         font-size: 1.6vh;
         color: #5e6985;
-        text-align: center;
+        text-align: cequals;
         margin-top: 1.6vh;
       }
       a, a:active, a:visited {
@@ -101,18 +101,18 @@
         <div id='divi' class='function-key all-keys'>÷</div>
         <div id='minus' class='function-key all-keys'>−</div>
         <div id='sum' class='function-key all-keys'>+</div>
-        <div class='k0 all-keys' value='0'>0</div>
-        <div class='k1 all-keys' value='1'>1</div>
-        <div class='k2 all-keys' value='2'>2</div>
-        <div class='k3 all-keys' value='3'>3</div>
-        <div class='k4 all-keys' value='4'>4</div>
-        <div class='k5 all-keys' value='5'>5</div>
-        <div class='k6 all-keys' value='6'>6</div>
-        <div class='k7 all-keys' value='7'>7</div>
-        <div class='k8 all-keys' value='8'>8</div>
-        <div class='k9 all-keys' value='9'>9</div>
-        <div class='comma all-keys' value='.'>.</div>
-        <div id='enter' class='function-key all-keys'>enter</div>
+        <div id='k0' class='all-keys'>0</div>
+        <div id='k1' class='all-keys'>1</div>
+        <div id='k2' class='all-keys'>2</div>
+        <div id='k3' class='all-keys'>3</div>
+        <div id='k4' class='all-keys'>4</div>
+        <div id='k5' class='all-keys'>5</div>
+        <div id='k6' class='all-keys'>6</div>
+        <div id='k7' class='all-keys'>7</div>
+        <div id='k8' class='all-keys'>8</div>
+        <div id='k9' class='all-keys'>9</div>
+        <div id='dot' class='all-keys'>.</div>
+        <div id='equals' class='function-key all-keys'>equals</div>
       </main>
       <footer>
         <a href='https://github.com/kyriri' target='_blank'>kyriri</a> 
@@ -126,105 +126,97 @@
   </body>
   <script>
     const display = document.getElementsByClassName('display')[0];
+    let memory = [];
 
-    let num1 = '';
-    let num2 = '';
-    let currentInput = 'num1';
-    let currentInputContent = '';
-    let fn = '';
-
-    window.addEventListener('click', retriveClickInput);
-    window.addEventListener('keydown', retrieveKeyboardInput);
-
-    function updateDisplay(info = currentInputContent) {
-      display.innerHTML = info;
+    function test(e) {
+      selectAction( identifyInput(e) );
+      console.table(memory);
     }
-    function toggleOrCalculate() {
-      if (currentInput == 'num1')  {
-        num1 = currentInputContent;
-        currentInputContent = '';
-        currentInput = 'num2';
+
+    // the function below reads an event and returns an object
+    // with value and its type (function or number).
+    function identifyInput(e) {
+      if (e.target.id) {
+        input = e.target.id === 'dot' ? '.' : e.target.id ;
       } else {
-        num2 = currentInputContent;
-        currentInputContent = '';
-        currentInput = 'num1';
-        num1 = calculator(+num1, +num2, fn);
-        updateDisplay(num1);
-      }
-    }
-    function retriveClickInput(e) {
-      if (e.target.attributes.value) {
-        value = e.target.attributes.value.value;
-        if (value == '.' && currentInputContent.match(/\./)) { return; }
-        currentInputContent += value;
-        updateDisplay();
-        return;
-      }
-      if (e.target.id) {   
-        toggleOrCalculate();
-        fn = e.target.id;
-      }
-    }
-    function retrieveKeyboardInput(e){
-      value = e.key;      
-      if( value == '.' || !isNaN(+value)) {
-        if (value == '.' && currentInputContent.match(/\./)) { return; }
-        currentInputContent += value;
-        updateDisplay();
-      } else {
-        toggleOrCalculate();
-        switch (value) {
-          case '+':
-            fn = 'sum';
+        input = e.key;
+        switch (true) {
+          case (e.code == 'Space'):
+            return;
+          case (!isNaN(input*1)):
             break;
-          case '-':
-            fn = 'minus';
+          case (input == '.' || input ==','):
+            input = '.';
             break;
-          case '*':
-            fn = 'mult';
+          case (input == '+'):
+            input = 'sum';
             break;
-          case '/':
-            fn = 'divi';
+          case (input == '-'):
+            input = 'minus';
             break;
-          //case ('Backspace' || 'Delete'):
-            //fn = 'clear';
-            //break;
-          case ('Enter' || '='):
-            fn = 'enter';
+          case (input == '*'):
+            input = 'mult';
             break;
+          case (input == '/'):
+            input = 'divi';
+            break;
+          case (input == 'Backspace' || input == 'Delete'):
+            input = 'clear';
+            break;
+          case (input == 'Enter' || input == '='):
+            input = 'equals';
+            break;
+          default:
+            return;
         }
       }
+      // below, if both conditions are inside the same regex, it might 
+      // return an empty array [''], and that fools the Boolean test
+      const numerical = input.match(/[0-9]/) || input.match(/\./);
+      return numerical ? { 
+          type: 'num',
+          value: numerical[0], 
+        } : {
+          type: 'fn',
+          value: input,
+        };
     }
-    function calculator(num1 = 0, num2 = 0, fn) {
-      switch (fn) {
-        case 'sum':
-          return num1 + num2;
-        case 'minus':
-          return num1 - num2;
-        case 'mult':
-          return num1 * num2;
-        case 'divi':
-          let result = num1 / num2;
-          if (isNaN(result)) return 'Error'
-          if (result === Infinity) return '∞'
-          return result;
+    // the function below receives the last input (an object) and modifies
+    // the global variable memory accordingly
+    function selectAction(input) {
+      if (!input) return;
+      if (!memory[0]) {
+        memory.push(input);
+      } else if (input.type == 'num' && memory[memory.length - 1].type == 'num') {
+        memory[memory.length - 1].value += input.value;
       }
     }
+    function calculate(num1 = 0, num2 = 0, fn) {
+      let result;
+      num1 = +num1;
+      num2 = +num2;
+      switch (fn) {
+        case 'sum':
+          result = num1 + num2;
+          break;
+        case 'minus':
+          result = num1 - num2;
+          break;
+        case 'mult':
+          result = num1 * num2;
+          break;
+        case 'divi':
+          result = num1 / num2;
+          if (isNaN(result)) return 'Error'
+          if (result === Infinity) return '∞'
+        }
+      return String(result);
+    }
+    function updateDisplay(info) {
+      display.innerHTML = info;
+    }
+    window.addEventListener('click', test);
+    window.addEventListener('keydown', test);
 
-/*
-    while input !function-key keep building number
-    (after first use of comma, disable it)
-    when click on function, finishes number, store fn and start next
-    while input !function-key keep building number
-    when click on function, evaluate, display and store result as num1
-    -- unless function was enter followed by a number, in which case
-       it should dismiss the result and build new num1
-
-       for later: double role of minus key (negative and operation)
-                  clear and restart keys
-                  correct comma vs dot visualization
-                  fallback for when number ends in comma
-                  what to do when the number is bigger than the display?
-*/
   </script>
 </html>
