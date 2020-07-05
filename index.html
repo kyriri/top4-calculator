@@ -185,6 +185,10 @@
     // the global variable memory accordingly
     function buildMemory(input) {
       if (!input) return;
+      if (input.value == 'clear') {
+        memory = []; 
+        return;
+      } 
       if (!memory[0]) {
         if (input.value == 'minus') {
           input.value = "-";
