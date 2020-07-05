@@ -186,11 +186,44 @@
     function buildMemory(input) {
       if (!input) return;
       if (!memory[0]) {
+        if (input.value == 'minus') {
+          input.value = "-";
+          input.type = 'num';
+        } else if (input.type == 'fn') return;
         memory.push(input);
       } else if (input.type == 'num' && memory[memory.length - 1].type == 'num') {
         memory[memory.length - 1].value += input.value;
       } else {
         memory.push(input);
+        selectAction();
+      }
+      // somewhere here I need a way to replace functions selected in a row
+    }
+    function selectAction() {
+      let number_of_functions_in_memory = memory.reduce(
+        (total, memoryPosition) => {
+          return total + (memoryPosition.type == 'fn' ? 1 : 0);
+        }, 0);
+      console.log(`functions: ${number_of_functions_in_memory}`);
+      switch (number_of_functions_in_memory) {
+        case 2:
+          // it never starts with a function
+          // numbers do not follow each other
+          // functions may follow each other
+          // if there are two functions, there are at least 3 items.
+          let nums = memory.filter(item => item.type == 'num');
+          let fns = memory.filter(item => item.type == 'fn');
+
+          let selection = nums[1] === undefined ? 0 : 1;
+          memory.push({
+            type: 'num',
+            value: calculate(nums[0].value, nums[selection].value, fns[0].value),
+          });
+          break;
+        case 1:
+          break;
+        default:
+          return;
       }
     }
     function calculate(num1 = 0, num2 = 0, fn) {
