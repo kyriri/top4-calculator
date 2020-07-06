@@ -212,14 +212,15 @@
       // somewhere here I need a way to replace functions selected in a row
     }
     function selectAction() {
+
       let last = memory.length - 1;
       let number_of_functions_in_memory = memory.reduce(
         (total, memoryPosition) => {
           return total + (memoryPosition.type == 'fn' ? 1 : 0);
         }, 0);
       let nums = memory.filter(item => item.type == 'num');
-      let fns = memory.filter(item => item.type == 'fn');
-      
+      let fns = memory.filter(item => item.type == 'fn');      
+
       console.log(`functions: ${number_of_functions_in_memory}`);
       switch (number_of_functions_in_memory) {
         case 2:
@@ -227,7 +228,10 @@
           // numbers do not follow each other
           // functions may follow each other
           // if there are two functions, there are at least 3 items.
-
+          if (fns[0].value == 'equals' && fns[1].type == 'fn' && fns[1].value != 'equals') {
+            memory.splice(-2, 1);
+            return;
+          }
           switch (true) {
             case (nums[1] === undefined):
               if (inferredNumber === null) inferredNumber = nums[0].value;
