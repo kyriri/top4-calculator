@@ -127,6 +127,8 @@
   <script>
     const display = document.getElementsByClassName('display')[0];
     let memory = [];
+    let calculatedTotal = null;
+    let inferredNumber = null;
 
     function test(e) {
       buildMemory( identifyInput(e) );
@@ -184,9 +186,13 @@
     // the function below receives the last input (an object) and modifies
     // the global variable memory accordingly
     function buildMemory(input) {
+      let last = memory.length - 1;
       if (!input) return;
       if (input.value == 'clear') {
         memory = []; 
+        calculatedTotal = null;
+        inferredNumber = null;
+        updateDisplay();
         return;
       } 
       if (!memory[0]) {
@@ -195,8 +201,9 @@
           input.type = 'num';
         } else if (input.type == 'fn') return;
         memory.push(input);
-      } else if (input.type == 'num' && memory[memory.length - 1].type == 'num') {
-        memory[memory.length - 1].value += input.value;
+      } else if (input.type == 'num' && memory[last].type == 'num') {
+        if (input.value === '.' && memory[last].value.match(/\./)) return;
+        memory[last].value += input.value;
       } else {
         memory.push(input);
         selectAction();
@@ -204,6 +211,7 @@
       // somewhere here I need a way to replace functions selected in a row
     }
     function selectAction() {
+      let last = memory.length - 1;
       let number_of_functions_in_memory = memory.reduce(
         (total, memoryPosition) => {
           return total + (memoryPosition.type == 'fn' ? 1 : 0);
@@ -218,11 +226,19 @@
           let nums = memory.filter(item => item.type == 'num');
           let fns = memory.filter(item => item.type == 'fn');
 
-          let selection = nums[1] === undefined ? 0 : 1;
-          memory.push({
-            type: 'num',
-            value: calculate(nums[0].value, nums[selection].value, fns[0].value),
-          });
+          switch (true) {
+            case (nums[1] === undefined):
+              if (inferredNumber === null) inferredNumber = nums[0].value;
+              break;
+            case (nums[1] !== undefined): 
+              inferredNumber = nums[1].value;
+              break;
+          }
+          if (calculatedTotal === null) calculatedTotal = nums[0].value;
+          calculatedTotal = calculate(calculatedTotal, inferredNumber, fns[0].value);
+          updateDisplay(calculatedTotal);
+          memory = [memory[last]];
+          memory.unshift({type: 'num', value: calculatedTotal});
           break;
         case 1:
           break;
@@ -251,7 +267,7 @@
         }
       return String(result);
     }
-    function updateDisplay(info) {
+    function updateDisplay(info = '') {
       display.innerHTML = info;
     }
     window.addEventListener('click', test);
