@@ -173,9 +173,10 @@
             return;
         }
       }
-      // below, if both conditions are inside the same regex, it might 
-      // return an empty array [''], and that fools the Boolean test
       const numerical = input.match(/[0-9]/) || input.match(/\./);
+      // above, we could tersely write both conditions inside the same 
+      // regex but them it can return an empty array [''], and that 
+      // fools the Boolean test
       return numerical ? { 
           type: 'num',
           value: numerical[0], 
@@ -265,7 +266,7 @@
       memory[1] = null;
       memory[2] = null;
       usher = 0;
-      updateDisplay()
+      updateDisplay('0')
     }
     function clear() {
       switch (true) {
@@ -313,14 +314,10 @@
       if (Math.abs(result) >= 1e11) result = result.toExponential(5);
       return String(result);
     }
-// to do:
-// tweak display so it overflows to the left but not to the right (currently it's the opposite)
-// do we add ability to input negative numbers?
-    function test(e) {
-      placeInput( identifyInput(e) );
-      console.table(memory);
+    function run(e) {
+      placeInput(identifyInput(e));
     }
-    window.addEventListener('click', test);
-    window.addEventListener('keydown', test);
+    window.addEventListener('click', run);
+    window.addEventListener('keydown', run);
   </script>
 </html>
