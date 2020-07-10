@@ -187,6 +187,7 @@
     function placeInput(input) {
       if (!input) return;
       if (input.value == 'restart') { restart(); return; }
+      if (input.value == 'clear') { clear(); return; }
 
       if (usher % 2 === 0) {       // usher points to number position...
         if (input.type == 'num') { // ...and input is num
@@ -265,6 +266,28 @@
       memory[2] = null;
       usher = 0;
       updateDisplay()
+    }
+    function clear() {
+      switch (true) {
+        case (memory[2] !== null):
+          if (memory[2].length - 1 === 0) {
+            memory[2] = null;
+            usher = 1;
+          } else memory[2] = memory[2].slice(0,-1);
+          break;
+        case (memory[1] !== 'equals' && memory[1] !== null):
+          memory[1] = null;
+          usher = 0;
+          break;
+        case (memory[1] == 'equals'):
+          memory[1] = null;
+        default:
+          if (memory[0] === null || memory[0].length - 1 === 0) {
+            memory[0] = null;
+            usher = 0;
+          } else memory[0] = memory[0].slice(0,-1);
+      }
+      updateDisplay();
     }
     function calculate(num1 = 0, fn, num2 = 0) {
       let result;
