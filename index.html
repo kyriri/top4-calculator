@@ -200,7 +200,7 @@
         if (input.type == 'fn') {  // ...but input is fn
           if (usher === 0) {
             memory[1].value = input.value;
-            usher += 1;
+            usher = 1;
           } 
           if (usher === 2) {
             if (memory[2].value === null) memory[1].value = input.value;
@@ -208,7 +208,7 @@
               memory[0].value = calculate(memory[0].value, memory[1].value, memory[2].value);
               memory[1].value = input.value;
               memory[2].value = null;
-              usher -= 1;
+              usher = 1;
             }
           }
         }
@@ -217,10 +217,10 @@
           if (memory[1].value == 'equals') {
             memory[0].value = input.value;
             memory[1].value = null;
-            usher -= 1;
+            usher = 0;
           } else {
             memory[2].value = input.value;
-            usher += 1;
+            usher = 2;
           }
         } else {
           memory[1].value = input.value;
