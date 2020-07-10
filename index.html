@@ -191,7 +191,7 @@
       if (usher % 2 === 0) {       // usher points to number position...
         if (input.type == 'num') { // ...and input is num
           if (memory[usher] && memory[usher].length > 10) return;
-          if (input.value === '.' && memory[usher].match(/\./)) return;
+          if (memory[usher] && input.value === '.' && memory[usher].match(/\./)) return;
           if (memory[usher] === null) memory[usher] = input.value;
           else memory[usher] += input.value;
         } 
