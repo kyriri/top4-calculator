@@ -205,7 +205,12 @@
             if (memory[2] === null) memory[1] = input.value;
             else {
               memory[0] = calculate(memory[0], memory[1], memory[2]);
-              memory[1] = memory[0] == 'Error' ? 'equals' : input.value;
+              if (memory[0] == 'Error') {
+                restart();
+                updateDisplay('Error');
+                return;
+              }
+              memory[1] = input.value;
               memory[2] = null;
               usher = 1;
             }
@@ -228,8 +233,8 @@
       }
       updateDisplay();
     }
-    function updateDisplay() {
-      display.innerHTML = memory.reduce( (acc, item) => { 
+    function updateDisplay(info) {
+      display.innerHTML = info ? info : memory.reduce( (acc, item) => { 
         let char;
         if (item === null) char = '';
         else {
