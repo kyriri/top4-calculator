@@ -127,16 +127,11 @@
   <script>
     const display = document.getElementsByClassName('display')[0];
     let usher = 0;
-    let memory = [{
-      type: 'num',
-      value: null,
-    },{
-      type: 'fn',
-      value: null,
-    },{      
-      type: 'num',
-      value: null,
-    }];
+    let memory = [
+      null, // number position
+      null, // function position
+      null, // number position
+    ];
 
     // the function below reads an event and returns an object
     // with value and its type (function or number).
@@ -192,38 +187,38 @@
 
       if (usher % 2 === 0) {       // usher points to number position...
         if (input.type == 'num') { // ...and input is num
-          if (memory[usher].value && memory[usher].value.length > 10) return;
-          if (input.value === '.' && memory[usher].value.match(/\./)) return;
-          if (memory[usher].value === null) memory[usher].value = input.value;
-          else memory[usher].value += input.value;
+          if (memory[usher] && memory[usher].length > 10) return;
+          if (input.value === '.' && memory[usher].match(/\./)) return;
+          if (memory[usher] === null) memory[usher] = input.value;
+          else memory[usher] += input.value;
         } 
         if (input.type == 'fn') {  // ...but input is fn
           if (usher === 0) {
-            memory[1].value = input.value;
+            memory[1] = input.value;
             usher = 1;
           } 
           if (usher === 2) {
-            if (memory[2].value === null) memory[1].value = input.value;
+            if (memory[2] === null) memory[1] = input.value;
             else {
-              memory[0].value = calculate(memory[0].value, memory[1].value, memory[2].value);
-              memory[1].value = memory[0].value == 'Error' ? 'equals' : input.value;
-              memory[2].value = null;
+              memory[0] = calculate(memory[0], memory[1], memory[2]);
+              memory[1] = memory[0] == 'Error' ? 'equals' : input.value;
+              memory[2] = null;
               usher = 1;
             }
           }
         }
       } else { // usher points to function position (that is, 1)
         if (input.type == 'num') {
-          if (memory[1].value == 'equals') {
-            memory[0].value = input.value;
-            memory[1].value = null;
+          if (memory[1] == 'equals') {
+            memory[0] = input.value;
+            memory[1] = null;
             usher = 0;
           } else {
-            memory[2].value = input.value;
+            memory[2] = input.value;
             usher = 2;
           }
         } else {
-          memory[1].value = input.value;
+          memory[1] = input.value;
         }
       }
       updateDisplay();
@@ -231,9 +226,9 @@
     function updateDisplay() {
       display.innerHTML = memory.reduce( (acc, item) => { 
         let char;
-        if (item.value === null) char = '';
+        if (item === null) char = '';
         else {
-          switch (item.value) {
+          switch (item) {
             case 'minus':
               char = '-';
               break;
@@ -250,14 +245,14 @@
               char = '';
               break;   
             default:
-              char = item.value;
+              char = item;
           }
         } 
         return acc + char;
       }, '');
     }
     function clear() {
-      memory.map(item => item.value = null);
+      memory.map(item => item = null);
       usher = 0;
       updateDisplay()
     }
