@@ -126,15 +126,24 @@
   </body>
   <script>
     const display = document.getElementsByClassName('display')[0];
-    let memory = [];
-    let calculatedTotal = null;
-    let inferredNumber = null;
-    let inferredFunction = null;
-
-    function test(e) {
-      buildMemory( identifyInput(e) );
-      console.table(memory);
-    }
+    let memory = [{
+      name: 'number1',
+      type: 'num',
+      value: null,
+    },{
+      name: 'function1',
+      type: 'fn',
+      value: null,
+    },{      
+      name: 'number2',
+      type: 'num',
+      value: null,
+    },{      
+      name: 'function2',
+      type: 'fn',
+      value: null,
+    }];
+    let usher = 0;
 
     // the function below reads an event and returns an object
     // with value and its type (function or number).
@@ -184,84 +193,87 @@
           value: input,
         };
     }
-    // the function below receives the last input (an object) and modifies
-    // the global variable memory accordingly
-    function buildMemory(input) {
-      let last = memory.length - 1;
+    function placeInput(input) {
       if (!input) return;
-      if (input.value == 'clear') {
-        memory = []; 
-        calculatedTotal = null;
-        inferredNumber = null;
-        updateDisplay();
-        return;
-      } 
-      if (!memory[0]) {
-        if (input.value == 'minus') {
-          input.value = "-";
-          input.type = 'num';
-        } else if (input.type == 'fn') return;
-        memory.push(input);
-      } else if (input.type == 'num' && memory[last].type == 'num') {
-        if (input.value === '.' && memory[last].value.match(/\./)) return;
-        memory[last].value += input.value;
-      } else {
-        memory.push(input);
-        selectAction();
-      }
-      // somewhere here I need a way to replace functions selected in a row
-    }
-    function selectAction() {
-
-      let last = memory.length - 1;
-      let number_of_functions_in_memory = memory.reduce(
-        (total, memoryPosition) => {
-          return total + (memoryPosition.type == 'fn' ? 1 : 0);
-        }, 0);
-      let nums = memory.filter(item => item.type == 'num');
-      let fns = memory.filter(item => item.type == 'fn');      
-
-      console.log(`functions: ${number_of_functions_in_memory}`);
-      switch (number_of_functions_in_memory) {
-        case 2:
-          // it never starts with a function
-          // numbers do not follow each other
-          // functions may follow each other
-          // if there are two functions, there are at least 3 items.
-          if (fns[0].value == 'equals' && fns[1].type == 'fn' && fns[1].value != 'equals') {
-            memory.splice(-2, 1);
-            return;
+      if (input.value == 'clear') { clear(); return; }
+      switch (usher) {
+        case 0:
+          if (input.type == 'fn') {
+            memory[1].value = input.value;
+            usher += 1;
+          } else {
+            if (input.value === '.' && memory[usher].value.match(/\./)) return;
+            if (memory[usher].value === null) memory[usher].value = input.value;
+            else memory[usher].value += input.value;
           }
-          switch (true) {
-            case (nums[1] === undefined):
-              if (inferredNumber === null) inferredNumber = nums[0].value;
-              break;
-            case (nums[1] !== undefined): 
-              inferredNumber = nums[1].value;
-              break;
-          }
-          if (calculatedTotal === null) calculatedTotal = nums[0].value;
-          calculatedTotal = calculate(calculatedTotal, inferredNumber, fns[0].value);
-          updateDisplay(calculatedTotal);
-          inferredFunction = fns[0];
-          memory = [memory[last]];
-          memory.unshift({type: 'num', value: calculatedTotal});
           break;
         case 1:
-          if (nums.length == 2) {
-            if (fns[0].value == 'equals') {
-              memory = [memory[last]];
-              calculatedTotal = null;
-              inferredNumber = null;
-              inferredFunction = null;
+          if (input.type == 'num') {
+            if (memory[1].value == 'equals') {
+              memory[0].value = input.value;
+              memory[1].value = null;
+              usher -= 1;
+            } else {
+              memory[2].value = input.value;
+              usher += 1;
             }
+          } else {
+            memory[1].value = input.value;
           }
           break;
-        default:
-          return;
+        case 2:
+          if (input.type == 'fn') {
+            if (memory[2].value === null) memory[1].value = input.value;
+            else {
+              memory[0].value = calculate(memory[0].value, memory[1].value, memory[2].value);
+              memory[1].value = input.value;
+              memory[2].value = null;
+              usher -= 1;
+            }
+          } else {
+            if (input.value === '.' && memory[usher].value.match(/\./)) return;
+            if (memory[usher].value === null) memory[usher].value = input.value;
+            else memory[usher].value += input.value;
+          }
+          break;
       }
+    updateDisplay();
     }
-    function calculate(num1 = 0, num2 = 0, fn) {
+    function updateDisplay() {
+      display.innerHTML = memory.reduce( (acc, item) => { 
+        // esse switch é uma repetição do identify input. podia ter como unificar...
+        let char;
+        if (item.value === null) char = '';
+        else {
+          switch (item.value) {
+            case 'minus':
+              char = '-';
+              break;
+            case 'sum':
+              char = '+';
+              break;
+            case 'mult':
+              char = '×';
+              break;      
+            case 'divi':
+              char = '÷';
+              break;   
+            case 'equals':
+              char = '';
+              break;   
+            default:
+              char = item.value;
+          }
+        } 
+        return acc + char;
+      }, '');
+    }
+    function clear() {
+      memory.map(item => item.value = null);
+      usher = 0;
+      updateDisplay()
+    }
+    function calculate(num1 = 0, fn, num2 = 0) {
       let result;
       num1 = +num1;
       num2 = +num2;
@@ -282,11 +294,12 @@
         }
       return String(result);
     }
-    function updateDisplay(info = '') {
-      display.innerHTML = info;
+
+    function test(e) {
+      placeInput( identifyInput(e) );
+      console.table(memory);
     }
     window.addEventListener('click', test);
     window.addEventListener('keydown', test);
-
   </script>
 </html>
