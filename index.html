@@ -206,7 +206,7 @@
             if (memory[2].value === null) memory[1].value = input.value;
             else {
               memory[0].value = calculate(memory[0].value, memory[1].value, memory[2].value);
-              memory[1].value = input.value;
+              memory[1].value = memory[0].value == 'Error' ? 'equals' : input.value;
               memory[2].value = null;
               usher = 1;
             }
@@ -283,7 +283,6 @@
       return String(result);
     }
 // to do:
-// block calculations after an infinity or error result
 // tweak display so it overflows to the left but not to the right (currently it's the opposite)
 // do we add ability to input negative numbers?
     function test(e) {
