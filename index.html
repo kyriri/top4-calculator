@@ -277,13 +277,15 @@
           break;
         case 'divi':
           result = num1 / num2;
-          if (isNaN(result)) return 'Error'
-          if (result === Infinity) return '∞'
         }
+      if (isNaN(result) || Math.abs(result) === Infinity) return 'Error';
       if (Math.abs(result) >= 1e11) result = result.toExponential(5);
       return String(result);
     }
-
+// to do:
+// block calculations after an infinity or error result
+// tweak display so it overflows to the left but not to the right (currently it's the opposite)
+// do we add ability to input negative numbers?
     function test(e) {
       placeInput( identifyInput(e) );
       console.table(memory);
