@@ -163,6 +163,9 @@
           case (input == 'Backspace' || input == 'Delete'):
             input = 'clear';
             break;
+          case (input == 'Escape'):
+            input = 'restart';
+            break;
           case (input == 'Enter' || input == '='):
             input = 'equals';
             break;
@@ -183,7 +186,7 @@
     }
     function placeInput(input) {
       if (!input) return;
-      if (input.value == 'clear') { clear(); return; }
+      if (input.value == 'restart') { restart(); return; }
 
       if (usher % 2 === 0) {       // usher points to number position...
         if (input.type == 'num') { // ...and input is num
@@ -211,6 +214,7 @@
         if (input.type == 'num') {
           if (memory[1] == 'equals') {
             memory[0] = input.value;
+            //restart('equals');
             memory[1] = null;
             usher = 0;
           } else {
@@ -251,8 +255,10 @@
         return acc + char;
       }, '');
     }
-    function clear() {
-      memory.map(item => item = null);
+    function restart(exception) {
+      if (!exception) memory[0] = null; 
+      memory[1] = null;
+      memory[2] = null;
       usher = 0;
       updateDisplay()
     }
