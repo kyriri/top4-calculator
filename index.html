@@ -126,20 +126,17 @@
   </body>
   <script>
     const display = document.getElementsByClassName('display')[0];
+    let usher = 0;
     let memory = [{
-      name: 'number1',
       type: 'num',
       value: null,
     },{
-      name: 'function1',
       type: 'fn',
       value: null,
     },{      
-      name: 'number2',
       type: 'num',
       value: null,
     }];
-    let usher = 0;
 
     // the function below reads an event and returns an object
     // with value and its type (function or number).
