@@ -220,9 +220,7 @@
         if (input.type == 'num') {
           if (memory[1] == 'equals') {
             memory[0] = input.value;
-            //restart('equals');
-            memory[1] = null;
-            usher = 0;
+            restart('equals');
           } else {
             memory[2] = input.value;
             usher = 2;
