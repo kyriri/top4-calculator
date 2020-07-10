@@ -138,7 +138,7 @@
       name: 'number2',
       type: 'num',
       value: null,
-    },{      
+    },{      // this memory position is never used
       name: 'function2',
       type: 'fn',
       value: null,
@@ -196,33 +196,19 @@
     function placeInput(input) {
       if (!input) return;
       if (input.value == 'clear') { clear(); return; }
-      switch (usher) {
-        case 0:
-          if (input.type == 'fn') {
+
+      if (usher % 2 === 0) {       // usher points to number position...
+        if (input.type == 'num') { // ...and input is num
+          if (input.value === '.' && memory[usher].value.match(/\./)) return;
+          if (memory[usher].value === null) memory[usher].value = input.value;
+          else memory[usher].value += input.value;
+        } 
+        if (input.type == 'fn') {  // ...but input is fn
+          if (usher === 0) {
             memory[1].value = input.value;
             usher += 1;
-          } else {
-            if (input.value === '.' && memory[usher].value.match(/\./)) return;
-            if (memory[usher].value === null) memory[usher].value = input.value;
-            else memory[usher].value += input.value;
-          }
-          break;
-        case 1:
-          if (input.type == 'num') {
-            if (memory[1].value == 'equals') {
-              memory[0].value = input.value;
-              memory[1].value = null;
-              usher -= 1;
-            } else {
-              memory[2].value = input.value;
-              usher += 1;
-            }
-          } else {
-            memory[1].value = input.value;
-          }
-          break;
-        case 2:
-          if (input.type == 'fn') {
+          } 
+          if (usher === 2) {
             if (memory[2].value === null) memory[1].value = input.value;
             else {
               memory[0].value = calculate(memory[0].value, memory[1].value, memory[2].value);
@@ -230,18 +216,26 @@
               memory[2].value = null;
               usher -= 1;
             }
-          } else {
-            if (input.value === '.' && memory[usher].value.match(/\./)) return;
-            if (memory[usher].value === null) memory[usher].value = input.value;
-            else memory[usher].value += input.value;
           }
-          break;
+        }
+      } else { // usher points to function position (that is, 1)
+        if (input.type == 'num') {
+          if (memory[1].value == 'equals') {
+            memory[0].value = input.value;
+            memory[1].value = null;
+            usher -= 1;
+          } else {
+            memory[2].value = input.value;
+            usher += 1;
+          }
+        } else {
+          memory[1].value = input.value;
+        }
       }
-    updateDisplay();
+      updateDisplay();
     }
     function updateDisplay() {
       display.innerHTML = memory.reduce( (acc, item) => { 
-        // esse switch é uma repetição do identify input. podia ter como unificar...
         let char;
         if (item.value === null) char = '';
         else {
