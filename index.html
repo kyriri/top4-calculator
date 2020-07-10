@@ -197,6 +197,7 @@
         } 
         if (input.type == 'fn') {  // ...but input is fn
           if (usher === 0) {
+            if (memory[0] === null) return;
             memory[1] = input.value;
             usher = 1;
           } 
