@@ -284,6 +284,9 @@
           result = num1 / num2;
         }
       if (isNaN(result) || Math.abs(result) === Infinity) return 'Error';
+      if (String(result).match(/.*\..*0{7,}/)) result = String(result).slice(0, String(result).match(/0{7,}/).index);
+      // above, if after a dot there are 7 or more zeros in a row, 
+      // ignores everything after the first zero
       if (Math.abs(result) >= 1e11) result = result.toExponential(5);
       return String(result);
     }
