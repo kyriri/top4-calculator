@@ -280,6 +280,7 @@
           if (isNaN(result)) return 'Error'
           if (result === Infinity) return '∞'
         }
+      if (Math.abs(result) >= 1e11) result = result.toExponential(5);
       return String(result);
     }
 
