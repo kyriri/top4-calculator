@@ -210,6 +210,7 @@
           else memory[usher] += input.value;
         } 
         if (input.type == 'fn') {  // ...but input is fn
+        // somewhere on the way we lost ability to enter negative numbers
           if (usher === 0) {
             if (memory[0] === null) return;
             memory[1] = input.value;
@@ -324,6 +325,14 @@
       // above, if after a dot there are 7 or more zeros in a row, 
       // ignores everything after the first zero
       if (Math.abs(result) >= 1e11) result = result.toExponential(5);
+      else if (
+        String(result).length > 11 &&
+        result - Math.floor(result) !== 0
+        ) {
+        let integerLength = String(Math.floor(result)).length;
+        let cases = (11 - 1 - integerLength) < 0 ? 0 : 11 - 1 - integerLength;
+        result = result.toFixed(cases);
+      }
       return String(result);
     }
     function run(e) {
