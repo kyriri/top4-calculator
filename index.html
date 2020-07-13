@@ -4,6 +4,9 @@
     <meta charset="utf-8"/>
     <title>Calculator</title>
     <style>
+      :root {
+        --button-text: 2.5vh;
+      }
       html {
         font-family: Avenir, 'Lucida Sans', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         font-size: 10px;
@@ -21,7 +24,7 @@
         row-gap: 1vh;
         grid-template-areas:
         'display display display display'
-        'clear   clear   mult    divi'
+        'restart clear   mult    divi'
         'k7      k8      k9      minus'
         'k4      k5      k6      sum'
         'k1      k2      k3      equals'
@@ -52,8 +55,16 @@
       .function-key {
         background-color: #eacfcb;
       }
-      #clear { grid-area: clear; }
+      #restart { 
+        font-size: var(--button-text);
+        grid-area: restart; 
+      }
+      #clear { 
+        font-size: var(--button-text);
+        grid-area: clear; 
+      }
       #equals { 
+        font-size: var(--button-text);
         height: auto;
         grid-area: equals; 
       }
@@ -96,6 +107,7 @@
       <header></header>
       <main>
         <div class='display'>0</div>
+        <div id='restart' class='function-key all-keys'>restart</div>
         <div id='clear' class='function-key all-keys'>clear</div>
         <div id='mult' class='function-key all-keys'>×</div>
         <div id='divi' class='function-key all-keys'>÷</div>
