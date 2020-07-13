@@ -305,10 +305,9 @@
         case (memory[1] == 'equals'):
           memory[1] = null;
         default:
-          if (memory[0] === null || memory[0].length - 1 === 0) {
-            memory[0] = null;
-            usher = 0;
-          } else memory[0] = memory[0].slice(0,-1);
+          if (memory[0] === null || memory[0].length - 1 === 0) memory[0] = null;
+          else memory[0] = memory[0].slice(0,-1);
+          usher = 0;
       }
       updateDisplay();
     }
