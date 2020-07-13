@@ -219,11 +219,15 @@
           else memory[usher] += input.value;
         } 
         if (input.type == 'fn') {  // ...but input is fn
-        // somewhere on the way we lost ability to enter negative numbers
           if (usher === 0) {
-            if (memory[0] === null) return;
-            memory[1] = input.value;
-            usher = 1;
+            if (memory[0] === null && input.value != 'minus') return;
+            if (memory[0] === null && input.value == 'minus') {
+              memory[0] = '-';
+              usher = 0;
+            } else {
+              memory[1] = input.value;
+              usher = 1;
+            }
           } 
           if (usher === 2) {
             if (memory[2] === null) memory[1] = input.value;
@@ -288,7 +292,7 @@
       memory[1] = null;
       memory[2] = null;
       usher = 0;
-      updateDisplay('0')
+      updateDisplay('0');
     }
     function clear() {
       switch (true) {
@@ -346,6 +350,7 @@
     }
     function run(e) {
       placeInput(identifyInput(e));
+      console.table(memory);
     }
     window.addEventListener('click', run);
     window.addEventListener('keydown', run);
