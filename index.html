@@ -30,7 +30,7 @@
         'k1      k2      k3      equals'
         'k0      k0      dot     equals';
       }
-      .display { 
+      .display-outer { 
         color: white;
         background-color: #8f6245;
         height: 8vh;
@@ -38,9 +38,16 @@
         font-size: 6.5vh;
         font-style: italic;
         text-align: right;
-        grid-area: display; 
+        overflow: hidden;
+        white-space: nowrap;
         border-radius: .5vh;
         padding: 2vh;
+        grid-area: display; 
+      }
+      .display-inner {
+        float: right;
+        margin: 0;
+        padding: 0;
       }
       .all-keys {
         background-color: #d0abb5;
@@ -106,7 +113,9 @@
     <div class='content'>
       <header></header>
       <main>
-        <div class='display'>0</div>
+        <div class='display-outer'>
+          <div class='display-inner'>0</div>
+        </div>
         <div id='restart' class='function-key all-keys'>restart</div>
         <div id='clear' class='function-key all-keys'>clear</div>
         <div id='mult' class='function-key all-keys'>×</div>
@@ -137,7 +146,7 @@
     </div>
   </body>
   <script>
-    const display = document.getElementsByClassName('display')[0];
+    const display = document.getElementsByClassName('display-inner')[0];
     let usher = 0;
     let memory = [
       null, // number position
