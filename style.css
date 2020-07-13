@@ -1,7 +1,7 @@
 /*
 Author: Kyriri
 Author page: https://github.com/kyriri
-Colors from: https://www.schemecolor.com/seashells.php
+Colors inspiration: https://www.schemecolor.com/seashells.php
 */
 
 :root {
@@ -50,7 +50,7 @@ main {
   padding: 0;
 }
 .all-keys {
-  background-color: #d0abb5;
+  background-color: #eacfcb;
   height: 8vh;
   font-size: 3vh;
   border-radius: .5vh;
@@ -60,7 +60,7 @@ main {
   box-shadow: 0 0 .8vh 0.4vh #5e6985;
 }
 .function-key {
-  background-color: #eacfcb;
+  background-color: #eee5df;
 }
 #restart { 
   font-size: var(--button-text);
