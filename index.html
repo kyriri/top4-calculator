@@ -154,8 +154,6 @@
       null, // number position
     ];
 
-    // the function below reads an event and returns an object
-    // with value and its type (function or number).
     function identifyInput(e) {
       if (e.target.id) {
         input = e.target.id === 'dot' ? '.' : e.target.id ;
@@ -212,13 +210,13 @@
       if (input.value == 'clear') { clear(); return; }
 
       if (usher % 2 === 0) {       // usher points to number position...
-        if (input.type == 'num') { // ...and input is num
+        if (input.type == 'num') { 
           if (memory[usher] && memory[usher].length > 10) return;
           if (memory[usher] && input.value === '.' && memory[usher].match(/\./)) return;
           if (memory[usher] === null) memory[usher] = input.value;
           else memory[usher] += input.value;
         } 
-        if (input.type == 'fn') {  // ...but input is fn
+        if (input.type == 'fn') { 
           if (usher === 0) {
             if (memory[0] === null && input.value != 'minus') return;
             if (memory[0] === null && input.value == 'minus') {
@@ -335,8 +333,9 @@
         }
       if (isNaN(result) || Math.abs(result) === Infinity) return 'Error';
       if (String(result).match(/.*\..*0{7,}/)) result = String(result).slice(0, String(result).match(/0{7,}/).index);
-      // above, if after a dot there are 7 or more zeros in a row, 
-      // ignores everything after the first zero
+      // above, to avoid float point issues (such as 0.1 + 0.2 != 0.3)
+      // if after a dot there are 7 or more zeros in a row, 
+      // it ignores everything after the first zero
       if (Math.abs(result) >= 1e11) result = result.toExponential(5);
       else if (
         String(result).length > 11 &&
@@ -350,7 +349,6 @@
     }
     function run(e) {
       placeInput(identifyInput(e));
-      console.table(memory);
     }
     window.addEventListener('click', run);
     window.addEventListener('keydown', run);
