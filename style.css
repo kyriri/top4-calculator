@@ -1,7 +1,7 @@
 /*
 Author: Kyriri
 Author page: https://github.com/kyriri
-Colors inspiration: https://www.schemecolor.com/seashells.php
+Inspiration for colors: https://www.schemecolor.com/seashells.php
 */
 
 :root {
@@ -9,7 +9,6 @@ Colors inspiration: https://www.schemecolor.com/seashells.php
 }
 html {
   font-family: Avenir, 'Lucida Sans', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  font-size: 10px;
   color: black;
 }
 .content {
