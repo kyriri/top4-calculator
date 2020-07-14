@@ -1,13 +1,15 @@
 # T.O.P : Calculator
 The Odin Project's 4th assignment: build an on-screen calculator
 
-Features required by the assignment:
-1. Ability to add, substract, multiply and divide
-2. Ability to restart the calculator
+## Features required by the assignment:
+- [x] Ability to add, substract, multiply and divide
+- [x] Ability to restart the calculator
 
-Optional features also implemented:
-3. Ability to input decimal numbers
-4. Ability to erase the last input
-5. Keyboard support
+## Optional features:
+- [x] Ability to input decimal numbers
+- [x] Ability to erase the last input
+- [x] Keyboard support
 
-As an exercise, I experimented with using vh as my only styling unit — that leads to a design that refits automatically (and proportionally) to the height of the screen.
+As an exercise, I experimented with using vh as my only styling unit — that led to a design that refits automatically and proportionally to the height of the screen.
+
+Also as an exercise, I created a spec file (my first) to test the main calculation function. Eventually, I found out it would have been more helpful to have concentrated on testing some other functions on the code, but, well, that's learning.
