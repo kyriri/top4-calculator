@@ -99,15 +99,15 @@ function updateDisplay(info) {
     info 
     || ((memory[0] || '') + 
         (memory[1] == 'equals' ? '' : memory[1] || '') + 
-        (memory[2] || '')
-    ) || '0' 
+        (memory[2] || '')) 
+    || '0' 
   );
 }
 function restart() {
   memory[0] = null; 
   memory[1] = null;
   memory[2] = null;
-  updateDisplay('0');
+  updateDisplay();
 }
 function clear() {
   // erases the last input on the last non-empty memory position
