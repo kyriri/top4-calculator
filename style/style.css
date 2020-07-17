@@ -96,6 +96,20 @@ footer {
   color: #5e6985;
   text-align: center;
   margin-top: 1.6vh;
+  position: relative;
+}
+svg {
+  width: 4.5vh;
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 50%;
+}
+svg:hover {
+  opacity: 100%;
+}
+path {
+  fill: #5e6985;
 }
 a, a:active, a:visited {
   color: #5e6985;
@@ -104,7 +118,4 @@ a, a:active, a:visited {
 a:hover {
     color: black;
     text-shadow: 0 0 0.8vh #d0abb5;
-}
-.github-mark {
-  background-color: azure;
 }
