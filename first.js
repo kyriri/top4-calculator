@@ -103,8 +103,8 @@ function updateDisplay(info) {
     ) || '0' 
   );
 }
-function restart(equals) {
-  if (!equals) memory[0] = null; 
+function restart() {
+  memory[0] = null; 
   memory[1] = null;
   memory[2] = null;
   updateDisplay('0');
