@@ -9,7 +9,7 @@ let memory = [
 ];
 
 function identifyInput(e) {
-    let input = e.target.id || e.key;
+    let input = e.target.id || e.key || 'void';
     if (input.includes('k')) input = input.slice(-1);
     switch (true) {
       case (e.code == 'Space'):
