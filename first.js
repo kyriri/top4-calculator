@@ -9,43 +9,40 @@ let memory = [
 ];
 
 function identifyInput(e) {
-  if (e.target.id) {
-    input = e.target.id === 'dot' ? '.' : e.target.id ;
-  } else {
-    input = e.key;
+    let input = e.target.id || e.key;
+    if (input.includes('k')) input = input.slice(-1);
     switch (true) {
       case (e.code == 'Space'):
         return;
       case (!isNaN(input*1)):
         break;
-      case (input == '.' || input ==','):
+      case (input == '.' || input == ',' || input == 'dot'):
         input = '.';
         break;
-      case (input == '+'):
-        input = 'sum';
+      case (input == '+') || input == 'sum':
+        input = '+';
         break;
-      case (input == '-'):
-        input = 'minus';
+      case (input == '-' || input == 'minus'):
+        input = '-';
         break;
-      case (input == '*'):
-        input = 'mult';
+      case (input == '*' || input == 'mult'):
+        input = '×';
         break;
-      case (input == '/'):
-        input = 'divi';
+      case (input == '/' || input == 'divi'):
+        input = '÷';
         break;
-      case (input == 'Backspace' || input == 'Delete'):
+      case (input == 'Backspace' || input == 'Delete' || input == 'clear'):
         input = 'clear';
         break;
-      case (input == 'Escape'):
+      case (input == 'Escape' || input == 'restart'):
         input = 'restart';
         break;
-      case (input == 'Enter' || input == '='):
+      case (input == 'Enter' || input == '=' || input == 'equals'):
         input = 'equals';
         break;
       default:
         return;
     }
-  }
   const numerical = input.match(/[0-9]/) || input.match(/\./);
   // above, we could tersely write both conditions inside the same 
   // regex but them it can return an empty array [''], and that 
@@ -79,7 +76,7 @@ function placeInput(input) {
   }
   if (input.type == 'fn') {
     if (!memory[0]) {
-      if (input.value == 'minus') memory[0] = '-';
+      if (input.value == '-') memory[0] = '-';
       else return;
     }
     else if (!memory[2]) memory[1] = input.value;
@@ -98,32 +95,13 @@ function placeInput(input) {
   updateDisplay();
 }
 function updateDisplay(info) {
-  display.innerHTML = info || memory.reduce( (acc, item) => { 
-    let char;
-    if (item === null) char = '';
-    else {
-      switch (item) {
-        case 'minus':
-          char = '-';
-          break;
-        case 'sum':
-          char = '+';
-          break;
-        case 'mult':
-          char = '×';
-          break;      
-        case 'divi':
-          char = '÷';
-          break;   
-        case 'equals':
-          char = '';
-          break;   
-        default:
-          char = item.toLocaleString();
-      }
-    } 
-    return acc + char;
-  }, '') || '0';
+  display.innerHTML = ( 
+    info 
+    || ((memory[0] || '') + 
+        (memory[1] == 'equals' ? '' : memory[1] || '') + 
+        (memory[2] || '')
+    ) || '0' 
+  );
 }
 function restart(equals) {
   if (!equals) memory[0] = null; 
@@ -156,16 +134,16 @@ function calculate(num1 = 0, fn, num2 = 0) {
   num1 = +num1;
   num2 = +num2;
   switch (fn) {
-    case 'sum':
+    case '+':
       result = num1 + num2;
       break;
-    case 'minus':
+    case '-':
       result = num1 - num2;
       break;
-    case 'mult':
+    case '×':
       result = num1 * num2;
       break;
-    case 'divi':
+    case '÷':
       result = num1 / num2;
     }
   if (isNaN(result) || Math.abs(result) === Infinity) return 'Error';
