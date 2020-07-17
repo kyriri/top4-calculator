@@ -47,6 +47,7 @@ function identifyInput(e) {
   // above, we could tersely write both conditions inside the same 
   // regex but them it can return an empty array [''], and that 
   // fools the Boolean test
+
   return numerical ? { 
       type: 'num',
       value: numerical[0], 
@@ -65,6 +66,7 @@ function placeInput(input) {
       memory[0] = null;
       memory[1] = null;
     }
+  // if input is a number, redirects it to a number position in memory
     let position = memory[1] === null ? 0 : 2;
     if (input.value == '.' && memory[position] === null) memory[position] = '0';
     
@@ -74,6 +76,7 @@ function placeInput(input) {
       memory[position] += input.value;
     }
   }
+  // if input is a function, ignore it or store it or launch calculation
   if (input.type == 'fn') {
     if (!memory[0]) {
       if (input.value == '-') memory[0] = '-';
@@ -148,10 +151,10 @@ function calculate(num1 = 0, fn, num2 = 0) {
     }
   if (isNaN(result) || Math.abs(result) === Infinity) return 'Error';
   
-  // below, to avoid float point issues (such as 0.1 + 0.2 != 0.3)
+  if (String(result).match(/.*\..*0{7,}/)) result = String(result).slice(0, String(result).match(/0{7,}/).index);
+  // above, to avoid float point issues (such as 0.1 + 0.2 != 0.3)
   // if after a dot there are 7 or more zeros in a row, 
   // it ignores everything after the first zero
-  if (String(result).match(/.*\..*0{7,}/)) result = String(result).slice(0, String(result).match(/0{7,}/).index);
   
   // big numbers get converted to scientific notation,
   // and numbers with many decimals get rounded to the last decimal place the display can show
@@ -164,7 +167,17 @@ function calculate(num1 = 0, fn, num2 = 0) {
     let cases = (11 - 1 - integerLength) < 0 ? 0 : 11 - 1 - integerLength;
     result = result.toFixed(cases);
   }
-  return String(result);
+  // ignore trailing zeros in scientific notation and decimal representation
+  result = String(result);
+  if (result.match(/\.*0+e/)) { 
+    let beg = result.slice(0, result.match(/0+e/).index);
+    let end = result.match(/e.+/)[0];
+    result = beg + end; 
+  } else
+  if (result.match(/\..*0+$/)) {
+    result = result.slice(0, result.match(/0+$/).index) || 0;
+  } 
+  return result;
 }
 function run(e) {
   placeInput(identifyInput(e));
