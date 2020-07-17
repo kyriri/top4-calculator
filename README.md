@@ -1,11 +1,11 @@
 # T.O.P : Calculator
-The Odin Project's 4th assignment: build an on-screen calculator
+[The Odin Project](https://www.theodinproject.com/)'s 4th assignment: build an on-screen calculator
 
-## Features required by the assignment:
+### Features required by the assignment:
 - [x] Ability to add, substract, multiply and divide
 - [x] Ability to restart the calculator
 
-## Optional features:
+### Optional features:
 - [x] Ability to input decimal numbers
 - [x] Ability to erase the last input
 - [x] Keyboard support
