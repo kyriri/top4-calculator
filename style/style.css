@@ -105,3 +105,6 @@ a:hover {
     color: black;
     text-shadow: 0 0 0.8vh #d0abb5;
 }
+.github-mark {
+  background-color: azure;
+}
